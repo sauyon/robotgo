@@ -33,25 +33,25 @@ import (
 */
 
 type Bit_map struct {
-	ImageBuffer   *C.uint8_t
-	Width         C.size_t
-	Height        C.size_t
-	Bytewidth     C.size_t
-	BitsPerPixel  C.uint8_t
-	BytesPerPixel C.uint8_t
+	ImageBuffer   *uint8
+	Width         int
+	Height        int
+	Bytewidth     int
+	BitsPerPixel  uint8
+	BytesPerPixel uint8
 }
 
-func GetPixelColor(x, y C.size_t) string {
-	color := C.agetPixelColor(x, y)
+func GetPixelColor(x, y int) string {
+	color := C.agetPixelColor(C.size_t(x), C.size_t(y))
 	gcolor := C.GoString(color)
 	defer C.free(unsafe.Pointer(color))
 	return gcolor
 }
 
-func GetScreenSize() (C.size_t, C.size_t) {
+func GetScreenSize() (int, int) {
 	size := C.agetScreenSize()
 	// Println("...", size, size.width)
-	return size.width, size.height
+	return int(size.width), int(size.height)
 }
 
 func GetXDisplayName() string {
@@ -68,16 +68,16 @@ func SetXDisplayName(name string) string {
 	return gstr
 }
 
-func CaptureScreen(x, y, w, h C.int) Bit_map {
-	bit := C.acaptureScreen(x, y, w, h)
+func CaptureScreen(x, y, w, h int) Bit_map {
+	bit := C.acaptureScreen(C.int(x), C.int(y), C.int(w), C.int(h))
 	// Println("...", bit)
 	bit_map := Bit_map{
-		ImageBuffer:   bit.imageBuffer,
-		Width:         bit.width,
-		Height:        bit.height,
-		Bytewidth:     bit.bytewidth,
-		BitsPerPixel:  bit.bitsPerPixel,
-		BytesPerPixel: bit.bytesPerPixel,
+		ImageBuffer:   (*uint8)(bit.imageBuffer),
+		Width:         int(bit.width),
+		Height:        int(bit.height),
+		Bytewidth:     int(bit.bytewidth),
+		BitsPerPixel:  uint8(bit.bitsPerPixel),
+		BytesPerPixel: uint8(bit.bytesPerPixel),
 	}
 
 	return bit_map
@@ -98,22 +98,22 @@ type MPoint struct {
 }
 
 //C.size_t  int
-func MoveMouse(x, y C.int) {
-	C.amoveMouse(x, y)
+func MoveMouse(x, y int) {
+	C.amoveMouse(C.int(x), C.int(y))
 }
 
-func DragMouse(x, y C.int) {
-	C.adragMouse(x, y)
+func DragMouse(x, y int) {
+	C.adragMouse(C.int(x), C.int(y))
 }
 
-func MoveMouseSmooth(x, y C.int) {
-	C.amoveMouseSmooth(x, y)
+func MoveMouseSmooth(x, y int) {
+	C.amoveMouseSmooth(C.int(x), C.int(y))
 }
 
-func GetMousePos() (C.size_t, C.size_t) {
+func GetMousePos() (int, int) {
 	pos := C.agetMousePos()
 	// Println("pos:###", pos, pos.x, pos.y)
-	return pos.x, pos.y
+	return int(pos.x), int(pos.y)
 }
 
 func MouseClick() {
@@ -124,13 +124,13 @@ func MouseToggle() {
 	C.amouseToggle()
 }
 
-func SetMouseDelay(x C.int) {
-	C.asetMouseDelay(x)
+func SetMouseDelay(x int) {
+	C.asetMouseDelay(C.int(x))
 }
 
-func ScrollMouse(x C.int, y string) {
+func ScrollMouse(x int, y string) {
 	z := C.CString(y)
-	C.ascrollMouse(x, z)
+	C.ascrollMouse(C.int(x), z)
 	defer C.free(unsafe.Pointer(z))
 }
 
@@ -195,14 +195,14 @@ func TypeString(x string) {
 	defer C.free(unsafe.Pointer(cx))
 }
 
-func TypeStringDelayed(x string, y C.size_t) {
+func TypeStringDelayed(x string, y int) {
 	cx := C.CString(x)
-	C.atypeStringDelayed(cx, y)
+	C.atypeStringDelayed(cx, C.size_t(y))
 	defer C.free(unsafe.Pointer(cx))
 }
 
-func SetKeyboardDelay(x C.size_t) {
-	C.asetKeyboardDelay(x)
+func SetKeyboardDelay(x int) {
+	C.asetKeyboardDelay(C.size_t(x))
 }
 
 /*
