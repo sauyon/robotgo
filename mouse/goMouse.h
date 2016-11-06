@@ -3,7 +3,7 @@
 
 //Global delays.
 int mouseDelay = 10;
-double lowSpeed = 1., highSpeed = 3.;
+double lowSpeed = 10., highSpeed = 30.;
 // int keyboardDelay = 10;
 
 

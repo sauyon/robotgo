@@ -357,7 +357,7 @@ bool smoothlyMoveMouse(MMPoint endPoint, double lowSpeed, double highSpeed) {
 
 		moveMouse(pos);
 
-		microsleep(1.);
+		microsleep(8.);
 	}
 
 	return true;
