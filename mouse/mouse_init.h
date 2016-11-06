@@ -336,18 +336,28 @@ bool smoothlyMoveMouse(MMPoint endPoint, double lowSpeed, double highSpeed) {
 	while ((distance = crude_hypot((double)pos.x - endPoint.x,
 	                               (double)pos.y - endPoint.y)) > 1.0) {
 		double gravity = DEADBEEF_UNIFORM(5., 500.);
-		double veloDistance;
 		velo_x += (gravity * ((double)endPoint.x - pos.x)) / distance;
 		velo_y += (gravity * ((double)endPoint.y - pos.y)) / distance;
 
 		double speed = DEADBEEF_UNIFORM(lowSpeed,highSpeed);
 		/* Normalize velocity to get a vector of length speed. */
-		veloDistance = crude_hypot(velo_x, velo_y) / speed;
-		velo_x /= veloDistance;
-		velo_y /= veloDistance;
+		double veloDistance = crude_hypot(velo_x, velo_y) / speed;
+		douvle mult = speed / veloDistance;
+		velo_x *= mult;
+		velo_y *= mult;
 
-		pos.x += floor(velo_x + 0.5);
-		pos.y += floor(velo_y + 0.5);
+		int dx = floor(velo_x + 0.5), dy = floor(velo_y + 0.5);
+		if (abs(dx) > abs(endPoint.x - pos.x)) {
+			pos.x = endPoint.x;
+		} else {
+			pos.x += dx;
+		}
+
+		if (abs(dy) > abs(endPoint.y - pos.y)) {
+			pos.y = endPoint.y;
+		} else {
+			pos.y += dy;
+		}
 
 		/* Make sure we are in the screen boundaries!
 		 * (Strange things will happen if we are not.) */
