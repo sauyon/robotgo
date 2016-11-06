@@ -342,7 +342,7 @@ bool smoothlyMoveMouse(MMPoint endPoint, double lowSpeed, double highSpeed) {
 		double speed = DEADBEEF_UNIFORM(lowSpeed,highSpeed);
 		/* Normalize velocity to get a vector of length speed. */
 		double veloDistance = crude_hypot(velo_x, velo_y) / speed;
-		douvle mult = speed / veloDistance;
+		double mult = speed / veloDistance;
 		velo_x *= mult;
 		velo_y *= mult;
 
