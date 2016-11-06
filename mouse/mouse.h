@@ -71,12 +71,13 @@ void moveMouse(MMPoint point);
  * boundaries. */
 void dragMouse(MMPoint point, const MMMouseButton button);
 
-/* Smoothly moves the mouse from the current position to the given point.
- * deadbeef_srand() should be called before using this function.
+/* Smoothly moves the mouse from the current position to the given point,
+ * moving at a speed between lowSpeed and highSpeed deadbeef_srand()
+ * should be called before using this function.
  *
  * Returns false if unsuccessful (i.e. a point was hit that is outside of the
  * screen boundaries), or true if successful. */
-bool smoothlyMoveMouse(MMPoint point);
+bool smoothlyMoveMouse(MMPoint point, double lowSpeed, double highSpeed);
 
 /* Returns the coordinates of the mouse on the current screen. */
 MMPoint getMousePos(void);

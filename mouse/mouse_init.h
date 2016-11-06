@@ -327,22 +327,22 @@ static double crude_hypot(double x, double y)
 	return ((M_SQRT2 - 1.0) * small) + big;
 }
 
-bool smoothlyMoveMouse(MMPoint endPoint)
-{
+bool smoothlyMoveMouse(MMPoint endPoint, double lowSpeed, double highSpeed) {
 	MMPoint pos = getMousePos();
 	MMSize screenSize = getMainDisplaySize();
-	double velo_x = 0.0, velo_y = 0.0;
+	double velo_x = 0., velo_y = 0.;
 	double distance;
 
 	while ((distance = crude_hypot((double)pos.x - endPoint.x,
 	                               (double)pos.y - endPoint.y)) > 1.0) {
-		double gravity = DEADBEEF_UNIFORM(5.0, 500.0);
+		double gravity = DEADBEEF_UNIFORM(5., 500.);
 		double veloDistance;
 		velo_x += (gravity * ((double)endPoint.x - pos.x)) / distance;
 		velo_y += (gravity * ((double)endPoint.y - pos.y)) / distance;
 
-		/* Normalize velocity to get a unit vector of length 1. */
-		veloDistance = crude_hypot(velo_x, velo_y);
+		double speed = DEADBEEF_UNIFORM(lowSpeed,highSpeed);
+		/* Normalize velocity to get a vector of length speed. */
+		veloDistance = crude_hypot(velo_x, velo_y) / speed;
 		velo_x /= veloDistance;
 		velo_y /= veloDistance;
 
@@ -357,8 +357,7 @@ bool smoothlyMoveMouse(MMPoint endPoint)
 
 		moveMouse(pos);
 
-		/* Wait 1 - 3 milliseconds. */
-		microsleep(DEADBEEF_UNIFORM(1.0, 3.0));
+		microsleep(1.);
 	}
 
 	return true;

@@ -106,6 +106,10 @@ func DragMouse(x, y int) {
 	C.adragMouse(C.int(x), C.int(y))
 }
 
+func SetMouseSpeed(low, high float64) {
+	C.asetMouseSpeed(C.double(low), C.double(high))
+}
+
 func MoveMouseSmooth(x, y int) {
 	C.amoveMouseSmooth(C.int(x), C.int(y))
 }

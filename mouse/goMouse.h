@@ -3,6 +3,7 @@
 
 //Global delays.
 int mouseDelay = 10;
+double lowSpeed = 1., highSpeed = 3.;
 // int keyboardDelay = 10;
 
 
@@ -53,14 +54,30 @@ int adragMouse(int x, int y){
 	return 0;
 }
 
+int asetMouseSpeed(double low, double high) {
+	lowSpeed = low;
+	highSpeed = high;
+
+	return 0;
+}
+
 int amoveMouseSmooth(int x, int y){
 	MMPoint point;
 	point = MMPointMake(x, y);
-	smoothlyMoveMouse(point);
+	smoothlyMoveMouse(point, lowSpeed, highSpeed);
 	microsleep(mouseDelay);
 
 	return 0;
 
+}
+
+int amoveMouseSmoothSpeed(int x, int y, double lowspeed, double highspeed) {
+	MMPoint point;
+	point = MMPointMake(x, y);
+	smoothlyMoveMouse(point, lowspeed, highspeed);
+	microsleep(mouseDelay);
+
+	return 0;
 }
 
 MMPoint agetMousePos(){
